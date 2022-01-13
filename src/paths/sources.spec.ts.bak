@@ -1,0 +1,390 @@
+import { mockInstanceOf } from "screeps-jest";
+import Sources from "./sources.ts.bak";
+import roleBuilder, { Builder } from "../roles/builder";
+import { Dictionary, List } from "lodash";
+
+const pos1 = mockInstanceOf<RoomPosition>({ x: 20, y: 35 });
+// const pos2 = mockInstanceOf<RoomPosition>({ x: 6, y: 30 });
+const source1 = mockInstanceOf<Source>({ id: "source1", pos: pos1 });
+// const source2 = mockInstanceOf<Source>({ id: "source2", pos: pos2 });
+
+
+
+describe("Path to a source", () => {
+  it("is blocked when walls are present on all sides.", () => {
+
+    const walls = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{ "type": "terrain", "terrain": "wall" }],
+          20: [{ "type": "terrain", "terrain": "wall" }],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        },
+        35: {
+          19: [{ "type": "terrain", "terrain": "wall" }],
+          20: [{ "type": "terrain", "terrain": "wall" }],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        },
+        36: {
+          19: [{ "type": "terrain", "terrain": "wall" }],
+          20: [{ "type": "terrain", "terrain": "wall" }],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        }
+      });
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => walls },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeTruthy();
+  });
+
+  it("is blocked when creeps are present on all sides. (suffix)", () => {
+
+    const otherCreep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      harvest: () => OK
+    });
+
+    const creeps = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          21: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}]
+        },
+        35: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          21: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}]
+        },
+        36: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          21: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}]
+        }
+      });
+
+
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => creeps },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeTruthy();
+  });
+
+  it("is blocked when creeps are present on all sides. (prefix)", () => {
+    const otherCreep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      harvest: () => OK
+    });
+
+    const creeps = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }]
+        },
+        35: {
+          19: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }]
+        },
+        36: {
+          19: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }]
+        }
+      });
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => creeps },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeTruthy();
+  });
+
+  it("is blocked when sources are present on all sides.", () => {
+
+    const sources = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }]
+        },
+        35: {
+          19: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }]
+        },
+        36: {
+          19: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }]
+        }
+      });
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => sources },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeTruthy();
+  });
+
+  it("is blocked when non-road structures are present on all sides. (prefix)", () => {
+
+    const structWall = mockInstanceOf<Structure>(
+      {"structureType": STRUCTURE_WALL }
+    )
+
+    const structures = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }]
+        },
+        35: {
+          19: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }]
+        },
+        36: {
+          19: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          21: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }]
+        }
+      });
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => structures },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeTruthy();
+  });
+
+  it("is blocked when non-road structures are present on all sides. (suffix)", () => {
+
+    const structWall = mockInstanceOf<Structure>(
+      {"structureType": STRUCTURE_WALL }
+    )
+
+    const structures = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          21: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}]
+        },
+        35: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          21: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}]
+        },
+        36: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          21: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}]
+        }
+      });
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => structures },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeTruthy();
+  });
+
+  it("is blocked when non-road structures, creeps, and walls are present on all sides. (prefix)", () => {
+
+    const otherCreep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      harvest: () => OK
+    });
+
+    const structWall = mockInstanceOf<Structure>(
+      {"structureType": STRUCTURE_WALL }
+    )
+
+    const mixed = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        },
+        35: {
+          19: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "source", "source": source1}, { "type": "terrain", "terrain": "plain" }],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        },
+        36: {
+          19: [{"type": "structure", "structure": structWall}, { "type": "terrain", "terrain": "plain" }],
+          20: [{"type": "creep", "creep": otherCreep}, { "type": "terrain", "terrain": "plain" }],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        }
+      });
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => mixed },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeTruthy();
+  });
+
+  it("is blocked when non-road structures, creeps, and walls are present on all sides. (suffix)", () => {
+
+    const otherCreep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      harvest: () => OK
+    });
+
+    const structWall = mockInstanceOf<Structure>(
+      {"structureType": STRUCTURE_WALL }
+    )
+
+    const mixed = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        },
+        35: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "source", "source": source1}],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        },
+        36: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        }
+      });
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => mixed },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeTruthy();
+  });
+
+  it("is unblocked when road structure, non-road structures, creeps, and walls are present on all sides.", () => {
+
+    const otherCreep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      harvest: () => OK
+    });
+
+    const structWall = mockInstanceOf<StructureWall>(
+      {"structureType": STRUCTURE_WALL }
+    )
+
+    const structRoad = mockInstanceOf<StructureRoad>(
+      {"structureType": STRUCTURE_ROAD }
+    )
+
+    const mixed = mockInstanceOf<LookAtResultMatrix>(
+      {
+        34: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structRoad}],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        },
+        35: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "source", "source": source1}],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        },
+        36: {
+          19: [{ "type": "terrain", "terrain": "plain" }, {"type": "structure", "structure": structWall}],
+          20: [{ "type": "terrain", "terrain": "plain" }, {"type": "creep", "creep": otherCreep}],
+          21: [{ "type": "terrain", "terrain": "wall" }]
+        }
+      });
+
+    const creep = mockInstanceOf<Builder>({
+      store: { energy: 0 },
+      memory: {
+        building: true,
+        role: "builder"
+      },
+      room: { lookAtArea: () => mixed },
+      harvest: () => OK
+    });
+
+    expect(Sources.isBlocked(creep, source1.pos)).toBeFalsy();
+  });
+
+});

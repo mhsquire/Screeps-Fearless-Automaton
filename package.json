@@ -1,7 +1,7 @@
 {
-  "name": "screeps-typescript-starter",
-  "version": "3.0.0",
-  "description": "",
+  "name": "screeps-fearless-automatons",
+  "version": "1.0.0",
+  "description": "A screeps bot AI.",
   "main": "index.js",
   "//": "If you add or change the names of destinations in screeps.json, make sure you update these scripts to reflect the changes",
   "scripts": {
@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/screepers/screeps-typescript-starter.git"
+    "url": "git@github.com:mhsquire/Screeps-Fearless-Automatons.git"
   },
-  "author": "",
+  "author": "Matthew Squire and a template by others.",
   "license": "Unlicense",
   "bugs": {
-    "url": "https://github.com/screepers/screeps-typescript-starter/issues"
+    "url": "https://github.com/mhsquire/Screeps-Fearless-Automatons/issues"
   },
-  "homepage": "https://github.com/screepers/screeps-typescript-starter#readme",
+  "homepage": "https://github.com/mhsquire/Screeps-Fearless-Automatons#readme",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^20.0.0",
     "@rollup/plugin-node-resolve": "^13.0.4",
@@ -42,7 +42,7 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-stats": "^1.0.1",
     "jest": "^27.1.0",
-    "lodash": "^3.10.1",
+    "lodash": "^4.17.21",
     "rollup": "^2.56.3",
     "rollup-plugin-clear": "^2.0.7",
     "rollup-plugin-screeps": "^1.0.1",
@@ -53,6 +53,7 @@
     "typescript": "^4.2.3"
   },
   "dependencies": {
-    "source-map": "~0.6.1"
+    "source-map": "~0.6.1",
+    "tslib": "^2.3.1"
   }
 }

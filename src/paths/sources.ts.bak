@@ -1,0 +1,57 @@
+const Sources = {
+  isBlocked(creep: Creep, target: RoomPosition): boolean {
+    const range = 1;
+    const top: number = target.y - range;
+    const left: number = target.x - range;
+    const bottom: number = target.y + range;
+    const right: number = target.x + range;
+    const area: LookAtResultMatrix = creep.room.lookAtArea(top, left, bottom, right);
+
+    let blocked = true;
+    for (let row: number = top; row <= bottom; row++) {
+      for (let col: number = left; col <= right; col++) {
+        for (let item = 0; item < area[row][col].length; item++) {
+          const currItem = area[row][col][item];
+          if (currItem["type"] === "terrain") {
+            if (currItem["terrain"] === "wall") {
+              break;
+            }
+            if (currItem["terrain"] === "plain" || currItem["terrain"] === "swamp") {
+              let nextItem: LookAtResult;
+              if (area[row][col][item + 1]) {
+                nextItem = area[row][col][item + 1];
+                if (nextItem !== undefined) {
+                  if (nextItem["type"] === "creep" && nextItem["creep"] !== creep || nextItem["type"] === "source") {
+                    break;
+                  } else if (nextItem["type"] === LOOK_STRUCTURES && nextItem["structure"]["structureType"] !== STRUCTURE_ROAD) {
+                      break;
+                    }
+                    // what about source?
+                  } else {
+                    blocked = false;
+                    break;
+                  }
+                }
+              }
+            }
+          } else if (currItem["type"] === "creep" && currItem["creep"] !== creep) {
+            break;
+          } else if (currItem["type"] === "source") {
+            break; // we assume that source is in middle.
+          } else if (currItem["type"] === "structure") {
+            if(typeof(currItem["structure"]) === "object" &&
+              currItem["structure"]["structureType"] !== STRUCTURE_ROAD) {
+              break;
+            }
+          } else {
+            blocked = false;
+            break;
+          }
+        }
+      }
+    }
+    return blocked;
+  }
+};
+
+export default Sources;
