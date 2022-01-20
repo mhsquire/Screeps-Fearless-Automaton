@@ -1,3 +1,13 @@
+export interface Harvester extends Creep {
+  memory: HarvesterMemory;
+}
+
+interface HarvesterMemory extends CreepMemory {
+  building: boolean;
+  role: 'harvester';
+}
+
+
 const roleHarvester = {
 
   run(creep: Creep): void {
@@ -16,7 +26,6 @@ const roleHarvester = {
       }
     }
   }
-
 };
 
 function isToBeFilled(structure: Structure): boolean {
