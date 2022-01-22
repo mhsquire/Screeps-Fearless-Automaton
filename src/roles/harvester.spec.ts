@@ -1,6 +1,9 @@
 import { mockInstanceOf, mockStructure } from 'screeps-jest';
 import roleHarvester, { isToBeFilled } from './harvester';
 
+
+const resource1 = mockInstanceOf<Resource>({ id: 'resource1' as Id<Resource> });
+const resource2 = mockInstanceOf<Resource>({ id: 'resource2' as Id<Resource> });
 const source1 = mockInstanceOf<Source>({ id: 'source1' as Id<Source> });
 const source2 = mockInstanceOf<Source>({ id: 'source2' as Id<Source> });
 const extension = mockStructure(STRUCTURE_EXTENSION);
@@ -12,7 +15,7 @@ describe('Harvester role', () => {
     it("harvests, when it's not full and is near a source", () => {
       const creep = mockInstanceOf<Creep>({
         store: { getFreeCapacity: () => 50 },
-        room: { find: () => [source1, source2] },
+        room: { find: (type: FindConstant) => (type === FIND_SOURCES ? [source1, source2] : [])},
         harvest: () => OK
       });
 
@@ -23,7 +26,7 @@ describe('Harvester role', () => {
     it("moves to a source, when it's not full and not near a source", () => {
       const creep = mockInstanceOf<Creep>({
         store: { getFreeCapacity: () => 50 },
-        room: { find: () => [source1, source2] },
+        room: { find: (type: FindConstant) => (type === FIND_SOURCES ? [source1, source2] : [])},
         harvest: () => ERR_NOT_IN_RANGE,
         moveTo: () => OK
       });
@@ -71,6 +74,32 @@ describe('Harvester role', () => {
       expect(creep.transfer).not.toHaveBeenCalled();
     });
 
+    it("walks to nearest resource when empty.", () => {
+      const hauler = mockInstanceOf<Creep>({
+        pos: {getRangeTo: () => 2},
+        store: {getFreeCapacity: () => 50,
+          getCapacity: () => 50},
+        room: {find: () => [resource1, resource2]},
+        pickup:() => ERR_NOT_IN_RANGE,
+        moveTo: () => OK
+      });
+
+      roleHarvester.run(hauler);
+      expect(hauler.moveTo).toHaveBeenCalledWith(resource1, expect.anything())
+    });
+
+    it("picksup resources when empty and in range.", () => {
+      const hauler = mockInstanceOf<Creep>({
+        pos: {getRangeTo: () => 0},
+        store: {getFreeCapacity: () => 50,
+          getCapacity: () => 50},
+        room: {find: () => [resource1, resource2]},
+        pickup:() => OK
+      });
+
+      roleHarvester.run(hauler);
+      expect(hauler.pickup).toHaveBeenCalledWith(resource1)
+    });
   });
 
   describe('isToBeFilled', () => {

@@ -3,6 +3,8 @@ import roleHarvester from 'roles/harvester';
 import roleUpgrader, { Upgrader } from 'roles/upgrader';
 import ErrorMapper from 'utils/ErrorMapper';
 import { runTower } from './tower';
+import spawnRole from 'spawn/rolesorter';
+import spawnBody from 'spawn/bodybuilder';
 
 declare global {
   interface CreepMemory {
@@ -22,6 +24,15 @@ function unwrappedLoop(): void {
       });
     }
   });
+
+  var nextRole = spawnRole.spawnRole();
+  var energy = Game.spawns.Spawn1.room.energyAvailable;
+  if (nextRole) {
+    let newName = nextRole + Game.time;
+    console.log("Spawning new " + nextRole + ": " + newName + " energy: " + energy);
+    let result = Game.spawns['Spawn1'].spawnCreep(spawnBody.body(energy), newName,
+      {memory: {role: nextRole}});
+  }
 
   Object.values(Game.creeps).forEach(creep => {
     if (creep.memory.role === 'harvester') {

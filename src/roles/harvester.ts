@@ -12,9 +12,17 @@ const roleHarvester = {
 
   run(creep: Creep): void {
     if (creep.store.getFreeCapacity() > 0) {
-      const sources = creep.room.find(FIND_SOURCES);
-      if (creep.harvest(sources[0]) === ERR_NOT_IN_RANGE) {
-        creep.moveTo(sources[0], { visualizePathStyle: { stroke: '#ffaa00' } });
+      let resources = creep.room.find(FIND_DROPPED_RESOURCES)
+      if (resources.length > 0) {
+        resources = _.sortBy(resources, r => creep.pos.getRangeTo(r));
+        if(creep.pickup(resources[0]) === ERR_NOT_IN_RANGE) {
+          creep.moveTo(resources[0], { visualizePathStyle: { stroke: '#ffaa00' }});
+        }
+      } else {
+        const sources = creep.room.find(FIND_SOURCES);
+        if (creep.harvest(sources[0]) === ERR_NOT_IN_RANGE) {
+          creep.moveTo(sources[0], { visualizePathStyle: { stroke: '#ffaa00' } });
+        }
       }
     } else {
       const targets = creep.room.find(FIND_MY_STRUCTURES, { filter: isToBeFilled });
