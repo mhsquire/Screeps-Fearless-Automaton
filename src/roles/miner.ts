@@ -15,5 +15,10 @@ const roleMiner = {
       }
     }
 };
-
+/*
+* Body building
+* - if RCL is 1 than don't make body
+* - if RCL is 2 or more than make all work and some move.
+* - if 
+*/
 export default roleMiner;

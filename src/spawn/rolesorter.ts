@@ -1,20 +1,3 @@
-//
-// function findRole(role) {
-//     switch (role.toLowerCase()) {
-//         case 0:
-//             return "harvester";
-//         case 1:
-//             return "upgrader";
-//         case 2:
-//             return "builder";
-//         case 3:
-//             return "fixer";
-//
-//     }
-// }
-
-import roleHarvester from "../roles/harvester";
-
 function calcRepairRatio() {
   let repairRatio;
   let totalHits = 0;
@@ -56,17 +39,16 @@ function calcBuildStrength() {
 
 const spawnRole = {
 
-  spawnRole: function() {
+  spawnRole: function(room: Room) {
     let buildNum;
-    const roles = ["harvester", "upgrader", "builder", "fixer"];
+    const roles = ["harvester", "upgrader", "builder", "fixer", "miner", "hauler"];
     for (let i = 0; i < roles.length; i++) {
       let creepsList = Object.values(Game.creeps)
       creepsList = _.filter(creepsList, creep => creep.memory.role === roles[i]);
       if (roles[i].toLowerCase() === "harvester") {
         if (creepsList.length < 3) {
-          return roles[i];
-        }
-      }
+          return "harvester";
+        }      }
       if (roles[i].toLowerCase() === "upgrader") {
         if (creepsList.length < 2) {
           return roles[i];
@@ -87,6 +69,12 @@ const spawnRole = {
         if (Object.keys(Game.structures).length > 0 && creepsList.length < calcRepairStrength()) {
           return roles[i];
         }
+      }
+      if (roles[i].toLowerCase() === "miner") {
+
+      }
+      if (roles[i].toLowerCase() === "hauler") {
+
       }
     }
     // Nothing to spawn

@@ -36,6 +36,13 @@ const roleHarvester = {
   }
 };
 
+/*
+* Body building
+* - if RCL is 1 than make WORK, CARRY, MOVE
+* - if RCL is 2 or more than make all carry and move.
+* - if 
+*/
+
 function isToBeFilled(structure: Structure): boolean {
   if (structure.structureType === STRUCTURE_EXTENSION
     || structure.structureType === STRUCTURE_SPAWN
