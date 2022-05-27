@@ -7,9 +7,8 @@ orbs:
 
 jobs:
   eslint:
-    docker:
-      # replace with your preferred image
-      - image: cimg/base:stable
+    build_and_test: # this can be any name you choose
+    executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
       - node/install-packages:
