@@ -1,5 +1,5 @@
 import spawnRole from "./rolesorter"
-import spawnBody from "./bodybuilder"
+// import spawnBody from "./bodybuilder"
 
 /**
  * The Context defines the interface of interest to clients.
@@ -37,8 +37,8 @@ class Context {
     if (role) {
       let newName = role + Game.time;
       console.log("Spawning new " + role + ": " + newName + " energy: " + energy);
-      let result = Game.spawns['Spawn1'].spawnCreep(spawnBody.body(energy), newName,
-        {memory: {role: role}});
+      // let result = Game.spawns['Spawn1'].spawnCreep(spawnBody.body(energy), newName,
+      //   {memory: {role: role}});
     }
   }
 }
@@ -53,13 +53,13 @@ interface RoleStrategy {
  */
 class OpeningRoleStrategy1 implements RoleStrategy {
   public selectRole(): string | false {
-    return spawnRole.spawnRole(Game.spawns.Spawn1.room);
+    return spawnRole.spawnRole();
   }
 }
 
 class OpeningRoleStrategy2 implements RoleStrategy {
   public selectRole(): string | false {
-    return spawnRole.spawnRole(Game.spawns.Spawn1.room)
+    return spawnRole.spawnRole()
   }
 }
 

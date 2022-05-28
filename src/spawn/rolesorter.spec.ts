@@ -47,11 +47,11 @@ describe("Role sorter", () => {
     expect(spawnRole.spawnRole()).toBe("upgrader");
   })
 
-  it("creates 1 builders after.", () => {
+  it("creates 1 builders after 3 harvesters.", () => {
     const harvester1 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
     const harvester2 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
     const harvester3 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
-
+    const room1 = mockInstanceOf<Room>({})
 
     mockGlobal<Game>('Game', { creeps: {
         harvester1,

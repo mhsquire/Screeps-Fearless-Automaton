@@ -39,7 +39,7 @@ function calcBuildStrength() {
 
 const spawnRole = {
 
-  spawnRole: function(room: Room) {
+  spawnRole: function() {
     let buildNum;
     const roles = ["harvester", "upgrader", "builder", "fixer", "miner", "hauler"];
     for (let i = 0; i < roles.length; i++) {
