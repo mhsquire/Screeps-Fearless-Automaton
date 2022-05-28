@@ -20,6 +20,8 @@ const tower1 = mockStructure(STRUCTURE_TOWER);
 const tower2 = mockStructure(STRUCTURE_TOWER);
 const myRoomWithTowers = mockInstanceOf<Room>({
   controller: myController,
+  progress: 3000,
+  energyAvailable: 3000,
   find: () => [tower1, tower2]
 });
 const myRoomWithoutTowers = mockInstanceOf<Room>({
@@ -30,6 +32,8 @@ const someoneElsesRoom = mockInstanceOf<Room>({ controller: someoneElsesControll
 const noOnesRoom = mockInstanceOf<Room>({ controller: undefined });
 
 describe('main loop', () => {
+  const mySpawn = mockInstanceOf<StructureSpawn>({name: "mySpawn", room: myRoomWithTowers})
+
 
   it('runs every creep', () => {
     mockGlobal<Game>('Game', {
@@ -39,7 +43,8 @@ describe('main loop', () => {
         upgrader
       },
       rooms: {},
-      time: 1
+      time: 1,
+      spawns: {mySpawn}
     });
     mockGlobal<Memory>('Memory', { creeps: {} });
     unwrappedLoop();
@@ -49,10 +54,14 @@ describe('main loop', () => {
   });
 
   it('cleans up the memory from deceased creeps', () => {
+    const mySpawn = mockInstanceOf<StructureSpawn>({name: "mySpawn", room: myRoomWithTowers})
+
+
     mockGlobal<Game>('Game', {
       creeps: { stillKicking: harvester },
       rooms: {},
-      time: 1
+      time: 1,
+      spawns: {mySpawn}
     });
     mockGlobal<Memory>('Memory', {
       creeps: {
@@ -74,7 +83,8 @@ describe('main loop', () => {
         noOnesRoom,
         someoneElsesRoom
       },
-      time: 1
+      time: 1,
+      spawns: {mySpawn}
     });
     mockGlobal<Memory>('Memory', { creeps: {} });
     unwrappedLoop();
