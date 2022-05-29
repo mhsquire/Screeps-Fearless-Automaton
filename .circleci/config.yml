@@ -4,8 +4,33 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.2
-  eslint: arrai/eslint@7.4.0
 
+commands:
+  upgrade_npm:
+    steps:
+      - run:
+          name: "Install the latest npm"
+          command: |
+              if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
+                  sudo npm install -g --upgrade npm
+              else
+                  npm install -g --upgrade npm
+              fi
+
+  install_eslint:
+    steps:
+    - run:
+        name: "Install the latest eslint"
+        command: |
+          if [ "$(which npm)" = "/usr/local/bin/eslint" ]; then
+              sudo npm install -g eslint && 
+              npm install --save-dev typescript @typescript-eslint/parser &&
+              npm install @typescript-eslint/eslint-plugin@latest --save-dev
+          else
+              npm install -g eslint && 
+              npm install --save-dev typescript @typescript-eslint/parser &&
+              npm install @typescript-eslint/eslint-plugin@latest --save-dev
+          fi
 
 jobs:
   eslint:
@@ -13,8 +38,8 @@ jobs:
     executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
-      - eslint/upgrade_npm
-      - eslint/install_eslint
+      - upgrade_npm
+      - install_eslint
       - run:
           command: eslint .
           name: Run lint
