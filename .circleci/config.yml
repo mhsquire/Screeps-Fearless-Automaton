@@ -5,14 +5,25 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.2
 
+commands:
+  install_npm_cmd:
+    steps:
+      - run:
+          name: "Install the latest npm"
+          command: |
+              if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
+                  sudo npm install -g --upgrade npm
+              else
+                  npm install -g --upgrade npm
+              fi
+
 jobs:
   eslint:
      # this can be any name you choose
     executor: node/default # use the default executor defined within the orb
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
+      - install_npm_cmd
       - run:
           command: eslint .
           name: Run lint
