@@ -23,13 +23,9 @@ commands:
         name: "Install the latest eslint"
         command: |
           if [ "$(which npm)" = "/usr/local/bin/eslint" ]; then
-              sudo npm install -g eslint && 
-              npm install --save-dev typescript @typescript-eslint/parser &&
-              npm install @typescript-eslint/eslint-plugin@latest --save-dev
+              sudo npm install -g eslint
           else
-              npm install -g eslint && 
-              npm install --save-dev typescript @typescript-eslint/parser &&
-              npm install @typescript-eslint/eslint-plugin@latest --save-dev
+              npm install -g eslint
           fi
 
 jobs:
