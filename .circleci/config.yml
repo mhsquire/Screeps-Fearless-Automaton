@@ -16,6 +16,16 @@ commands:
               else
                   npm install -g --upgrade npm
               fi
+  install_eslint_cmd:
+    steps:
+    - run:
+        name: Install the latest eslint
+        command: |
+          if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
+              sudo npm install -g eslint
+          else
+              npm install -g eslint
+          fi
 
 jobs:
   eslint:
@@ -24,6 +34,7 @@ jobs:
     steps:
       - checkout
       - install_npm_cmd
+      - install_eslint_cmd
       - run:
           command: eslint .
           name: Run lint
@@ -34,8 +45,7 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
+      - install_npm_cmd
       - run:
           command: jest
           name: run tests
