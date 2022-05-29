@@ -5,6 +5,7 @@ import spawnRole from "./rolesorter"
  * The Context defines the interface of interest to clients.
  */
 class Context {
+
   /**
    * @type {RoleStrategy} The Context maintains a reference to one of the Strategy
    * objects. The Context does not know the concrete class of a strategy. It
@@ -33,14 +34,15 @@ class Context {
    */
   public spawn(): void {
     const role = this.strategy.selectRole();
-    var energy = Game.spawns.Spawn1.room.energyAvailable;
+    const energy = Game.spawns.Spawn1.room.energyAvailable;
     if (role) {
-      let newName = role + Game.time;
-      console.log("Spawning new " + role + ": " + newName + " energy: " + energy);
+      const newName = role + Game.time.toString();
+      console.log("Spawning new " + role + ": " + newName + " energy: " + energy.toString());
       // let result = Game.spawns['Spawn1'].spawnCreep(spawnBody.body(energy), newName,
       //   {memory: {role: role}});
     }
   }
+
 }
 
 interface RoleStrategy {
@@ -52,15 +54,19 @@ interface RoleStrategy {
  * interface. The interface makes them interchangeable in the Context.
  */
 class OpeningRoleStrategy1 implements RoleStrategy {
+
   public selectRole(): string | false {
     return spawnRole.spawnRole();
   }
+
 }
 
 class OpeningRoleStrategy2 implements RoleStrategy {
+
   public selectRole(): string | false {
     return spawnRole.spawnRole()
   }
+
 }
 
 const spawnStrategy = {

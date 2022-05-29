@@ -77,8 +77,10 @@ describe('Harvester role', () => {
     it("walks to nearest resource when empty.", () => {
       const hauler = mockInstanceOf<Creep>({
         pos: {getRangeTo: () => 2},
-        store: {getFreeCapacity: () => 50,
-          getCapacity: () => 50},
+        store: {
+getFreeCapacity: () => 50,
+          getCapacity: () => 50
+},
         room: {find: () => [resource1, resource2]},
         pickup:() => ERR_NOT_IN_RANGE,
         moveTo: () => OK
@@ -91,8 +93,10 @@ describe('Harvester role', () => {
     it("picksup resources when empty and in range.", () => {
       const hauler = mockInstanceOf<Creep>({
         pos: {getRangeTo: () => 0},
-        store: {getFreeCapacity: () => 50,
-          getCapacity: () => 50},
+        store: {
+getFreeCapacity: () => 50,
+          getCapacity: () => 50
+},
         room: {find: () => [resource1, resource2]},
         pickup:() => OK
       });

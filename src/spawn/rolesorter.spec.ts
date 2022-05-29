@@ -9,12 +9,8 @@ const builder = mockInstanceOf<Creep>({ memory: { role: 'builder' } });
 describe("Role sorter", () => {
 
   it("creates harvester creeps first.", () => {
-    const someCreeps = mockInstanceOf<Object>({});
+    mockGlobal<Game>('Game', {creeps: {builder}})
 
-    mockGlobal<Game>('Game', { creeps: {
-      builder
-      } })
-    mockGlobal<Object>( 'creeps', {length: 0})
 
     expect(spawnRole.spawnRole()).toBe("harvester");
   });
@@ -24,10 +20,12 @@ describe("Role sorter", () => {
     const harvester1 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
     const harvester2 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
 
-    mockGlobal<Game>('Game', { creeps: {
+    mockGlobal<Game>('Game', {
+ creeps: {
         harvester1,
         harvester2
-      } })
+      }
+})
 
     expect(spawnRole.spawnRole()).toBe("harvester");
   });
@@ -38,11 +36,13 @@ describe("Role sorter", () => {
     const harvester3 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
 
 
-    mockGlobal<Game>('Game', { creeps: {
+    mockGlobal<Game>('Game', {
+ creeps: {
         harvester1,
         harvester2,
         harvester3
-      } })
+      }
+})
 
     expect(spawnRole.spawnRole()).toBe("upgrader");
   })
@@ -53,11 +53,13 @@ describe("Role sorter", () => {
     const harvester3 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
     const room1 = mockInstanceOf<Room>({})
 
-    mockGlobal<Game>('Game', { creeps: {
+    mockGlobal<Game>('Game', {
+ creeps: {
         harvester1,
         harvester2,
         harvester3
-      } })
+      }
+})
 
     expect(spawnRole.spawnRole()).toBe("upgrader");
   })

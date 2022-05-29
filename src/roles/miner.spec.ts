@@ -23,7 +23,7 @@ describe("Miner", () => {
   it("mines energy and drops it.", () => {
     const miner = mockInstanceOf<Creep>({
       room: { find: () => [source1, source2]},
-      harvest:() => OK,
+      harvest:() => OK
     });
 
     roleMiner.run(miner);
