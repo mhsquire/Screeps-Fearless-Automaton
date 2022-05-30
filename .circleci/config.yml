@@ -36,9 +36,9 @@ commands:
         name: "Install the latest jest"
         command: |
           if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
-              sudo npm install -g jest &&
+              sudo npm install -g jest
           else
-              npm install -g jest &&
+              npm install -g jest
           fi
 
 jobs:
