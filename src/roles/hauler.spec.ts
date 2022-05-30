@@ -1,5 +1,5 @@
-import { mockGlobal, mockInstanceOf, mockStructure } from "screeps-jest";
-import roleHauler, { Hauler, isToBeFilled } from "./hauler";
+import { mockInstanceOf, mockStructure } from "screeps-jest";
+import roleHauler, { isToBeFilled } from "./hauler";
 
 
 const resource1 = mockInstanceOf<Resource>({ id: 'resource1' as Id<Resource> });
@@ -11,8 +11,10 @@ describe("Hauler creep", () => {
   it("walks to nearest resource when empty.", () => {
     const hauler = mockInstanceOf<Creep>({
       pos: {getRangeTo: () => 2},
-      store: {getFreeCapacity: () => 50,
-              getCapacity: () => 50},
+      store: {
+getFreeCapacity: () => 50,
+              getCapacity: () => 50
+},
       room: {find: () => [resource1, resource2]},
       pickup:() => ERR_NOT_IN_RANGE,
       moveTo: () => OK
@@ -25,8 +27,10 @@ describe("Hauler creep", () => {
   it("picksup resources when empty and in range.", () => {
     const hauler = mockInstanceOf<Creep>({
       pos: {getRangeTo: () => 2},
-      store: {getFreeCapacity: () => 50,
-        getCapacity: () => 50},
+      store: {
+getFreeCapacity: () => 50,
+        getCapacity: () => 50
+},
       room: {find: () => [resource1, resource2]},
       pickup:() => OK
     });
@@ -38,8 +42,10 @@ describe("Hauler creep", () => {
   it("hauls energy to the nearest structure.", () => {
     const hauler = mockInstanceOf<Creep>({
       pos: {getRangeTo: () => 2},
-      store: {getFreeCapacity: () => 0,
-              getCapacity: () => 50},
+      store: {
+getFreeCapacity: () => 0,
+              getCapacity: () => 50
+},
       room: { find: () => [extension]},
       transfer:() => ERR_NOT_IN_RANGE,
       moveTo: () => OK
@@ -53,8 +59,10 @@ describe("Hauler creep", () => {
   it("transfers energy to the nearest structure.", () => {
     const hauler = mockInstanceOf<Creep>({
       pos: {getRangeTo: () => 0},
-      store: {getFreeCapacity: () => 0,
-              getCapacity: () => 50},
+      store: {
+getFreeCapacity: () => 0,
+              getCapacity: () => 50
+},
       room: { find: () => [extension]},
       transfer:() => OK
     });
@@ -68,7 +76,8 @@ describe("Hauler creep", () => {
       pos: {getRangeTo: () => 0},
       store: {
         getFreeCapacity: () => 25,
-        getCapacity: () => 50},
+        getCapacity: () => 50
+},
       room: { find: () => [extension]},
       transfer:() => OK
     });

@@ -1,0 +1,61 @@
+# Use the latest 2.1 version of CircleCI pipeline process engine.
+# See: https://circleci.com/docs/2.0/configuration-reference
+version: 2.1
+
+orbs:
+  node: circleci/node@5.0.2
+
+commands:
+  upgrade_npm:
+    steps:
+      - run:
+          name: "Install the latest npm"
+          command: |
+              if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
+                  sudo npm install -g --upgrade npm
+              else
+                  npm install -g --upgrade npm
+              fi
+
+  install_eslint:
+    steps:
+    - run:
+        name: "Install the latest eslint"
+        command: |
+          if [ "$(which npm)" = "/usr/local/bin/eslint" ]; then
+              sudo npm install -g eslint &&
+              sudo npm i --save-dev typescript @typescript-eslint/parser
+          else
+              npm install -g eslint &&
+              npm i --save-dev typescript @typescript-eslint/parser
+          fi
+
+jobs:
+  eslint:
+     # this can be any name you choose
+    executor: node/default # use the default executor defined within the orb
+    steps:
+      - checkout
+      - upgrade_npm
+      - install_eslint
+      - run:
+          command: eslint .
+          name: Run lint
+      - persist_to_workspace:
+          root: ~/project
+          paths: .
+  jest:
+    executor: node/default
+    steps:
+      - checkout
+      - install_npm_cmd
+      - run:
+          command: jest
+          name: run tests
+
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  precheckin-workflow:
+    jobs:
+      - eslint

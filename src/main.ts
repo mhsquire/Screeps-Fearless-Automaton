@@ -5,7 +5,7 @@ import ErrorMapper from 'utils/ErrorMapper';
 import { runTower } from './tower';
 import spawnRole from 'spawn/rolesorter';
 // import spawnBody from 'spawn/bodybuilder';
-import spawnStrategy from 'spawn/strategy';
+// import spawnStrategy from 'spawn/strategy';
 
 declare global {
   interface CreepMemory {
@@ -19,11 +19,11 @@ function unwrappedLoop(): void {
   Object.values(Game.spawns).forEach(function(spawn) {
     if(spawn.room.controller?.my) {
       // const roleStrategy = spawnStrategy.policy(spawn.room.controller.progress)
-      var nextRole = spawnRole.spawnRole();
-      var energy = spawn.room.energyAvailable;
+      const nextRole = spawnRole.spawnRole();
+      const energy = spawn.room.energyAvailable;
       if (nextRole) {
-        let newName = nextRole + Game.time;
-        console.log("Spawning new " + nextRole + ": " + newName + " energy: " + energy);
+        const newName = nextRole + Game.time.toString();
+        console.log("Spawning new " + nextRole + ": " + newName + " energy: " + energy.toString());
         // let result = Game.spawns['Spawn1'].spawnCreep(spawnBody.body(energy), newName,
         //   {memory: {role: nextRole}});
       }
