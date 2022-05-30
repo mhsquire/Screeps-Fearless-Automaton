@@ -22,12 +22,23 @@ commands:
     - run:
         name: "Install the latest eslint"
         command: |
-          if [ "$(which npm)" = "/usr/local/bin/eslint" ]; then
+          if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
               sudo npm install -g eslint &&
               sudo npm i --save-dev typescript @typescript-eslint/parser
           else
               npm install -g eslint &&
               npm i --save-dev typescript @typescript-eslint/parser
+          fi
+
+  install_jest:
+    steps:
+    - run:
+        name: "Install the latest jest"
+        command: |
+          if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
+              sudo npm install -g jest &&
+          else
+              npm install -g jest &&
           fi
 
 jobs:
@@ -49,6 +60,7 @@ jobs:
     steps:
       - checkout
       - upgrade_npm
+      - install_jest
       - run:
           command: jest
           name: run tests
