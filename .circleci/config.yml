@@ -48,7 +48,7 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - install_npm_cmd
+      - upgrade_npm
       - run:
           command: jest
           name: run tests
