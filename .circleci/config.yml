@@ -59,3 +59,4 @@ workflows:
   precheckin-workflow:
     jobs:
       - eslint
+      - jest
