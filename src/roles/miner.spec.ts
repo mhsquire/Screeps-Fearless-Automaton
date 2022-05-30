@@ -1,7 +1,7 @@
-import { mockGlobal, mockInstanceOf } from "screeps-jest";
-import roleMiner, { Miner } from '../roles/miner';
-import roleBuilder, { Builder } from '../roles/builder';
-import roleHarvester, { Harvester } from '../roles/harvester';
+import { mockInstanceOf } from "screeps-jest";
+import roleMiner from '../roles/miner';
+// import roleBuilder, { Builder } from '../roles/builder';
+// import roleHarvester, { Harvester } from '../roles/harvester';
 
 
 const source1 = mockInstanceOf<Source>({ id: 'source1' as Id<Source> });

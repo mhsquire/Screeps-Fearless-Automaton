@@ -1,8 +1,8 @@
 import { mockGlobal, mockInstanceOf } from "screeps-jest";
 import spawnRole from './rolesorter';
-import roleBuilder, { Builder } from '../roles/builder';
-import roleHarvester, { Harvester } from '../roles/harvester';
-
+// import roleBuilder, { Builder } from '../roles/builder';
+// import roleHarvester, { Harvester } from '../roles/harvester';
+import Harvester from '../roles/harvester'
 
 const builder = mockInstanceOf<Creep>({ memory: { role: 'builder' } });
 
@@ -17,8 +17,8 @@ describe("Role sorter", () => {
 
   it("creates three (3) harvester creeps first.", () => {
 
-    const harvester1 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
-    const harvester2 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
+    const harvester1 = mockInstanceOf<typeof Harvester>({ memory: { role: "harvester" } });
+    const harvester2 = mockInstanceOf<typeof Harvester>({ memory: { role: "harvester" } });
 
     mockGlobal<Game>('Game', {
  creeps: {
@@ -31,9 +31,9 @@ describe("Role sorter", () => {
   });
 
   it("creates two (2) upgraders after three (3) harvesters", () => {
-    const harvester1 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
-    const harvester2 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
-    const harvester3 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
+    const harvester1 = mockInstanceOf<typeof Harvester>({ memory: { role: "harvester" } });
+    const harvester2 = mockInstanceOf<typeof Harvester>({ memory: { role: "harvester" } });
+    const harvester3 = mockInstanceOf<typeof Harvester>({ memory: { role: "harvester" } });
 
 
     mockGlobal<Game>('Game', {
@@ -48,10 +48,10 @@ describe("Role sorter", () => {
   })
 
   it("creates 1 builders after 3 harvesters.", () => {
-    const harvester1 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
-    const harvester2 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
-    const harvester3 = mockInstanceOf<Harvester>({ memory: { role: "harvester" } });
-    const room1 = mockInstanceOf<Room>({})
+    const harvester1 = mockInstanceOf<typeof Harvester>({ memory: { role: "harvester" } });
+    const harvester2 = mockInstanceOf<typeof Harvester>({ memory: { role: "harvester" } });
+    const harvester3 = mockInstanceOf<typeof Harvester>({ memory: { role: "harvester" } });
+    // const room1 = mockInstanceOf<Room>({})
 
     mockGlobal<Game>('Game', {
  creeps: {

@@ -70,12 +70,12 @@ const spawnRole = {
           return roles[i];
         }
       }
-      if (roles[i].toLowerCase() === "miner") {
-
-      }
-      if (roles[i].toLowerCase() === "hauler") {
-
-      }
+      // if (roles[i].toLowerCase() === "miner") {
+      //
+      // }
+      // if (roles[i].toLowerCase() === "hauler") {
+      //
+      // }
     }
     // Nothing to spawn
     return false;

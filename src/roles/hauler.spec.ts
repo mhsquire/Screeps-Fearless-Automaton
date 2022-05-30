@@ -1,5 +1,5 @@
 import { mockInstanceOf, mockStructure } from "screeps-jest";
-import roleHauler, { Hauler, isToBeFilled } from "./hauler";
+import roleHauler, { isToBeFilled } from "./hauler";
 
 
 const resource1 = mockInstanceOf<Resource>({ id: 'resource1' as Id<Resource> });
