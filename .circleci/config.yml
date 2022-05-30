@@ -62,7 +62,7 @@ jobs:
       - upgrade_npm
       - install_jest
       - run:
-          command: jest all
+          command: npm run test
           name: run tests
 
 # Invoke jobs via workflows
