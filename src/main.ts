@@ -5,7 +5,7 @@ import ErrorMapper from 'utils/ErrorMapper';
 import { runTower } from './tower';
 import spawnRole from 'spawn/rolesorter';
 // import spawnBody from 'spawn/bodybuilder';
-import spawnStrategy from 'spawn/strategy';
+// import spawnStrategy from 'spawn/strategy';
 
 declare global {
   interface CreepMemory {

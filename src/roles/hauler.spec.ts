@@ -1,4 +1,4 @@
-import { mockGlobal, mockInstanceOf, mockStructure } from "screeps-jest";
+import { mockInstanceOf, mockStructure } from "screeps-jest";
 import roleHauler, { Hauler, isToBeFilled } from "./hauler";
 
 

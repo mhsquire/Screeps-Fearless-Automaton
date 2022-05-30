@@ -1,6 +1,5 @@
 /* eslint-disable global-require, no-cond-assign, no-prototype-builtins, no-underscore-dangle */
 import { SourceMapConsumer } from 'source-map';
-
 export default class ErrorMapper {
 
   // Cache consumer
@@ -8,7 +7,9 @@ export default class ErrorMapper {
 
   public static get consumer(): SourceMapConsumer {
     if (this._consumer == null) {
+      /* eslint-disable */
       this._consumer = new SourceMapConsumer(require('main.js.map'));
+      /* eslint-enable */
     }
     return this._consumer;
   }
