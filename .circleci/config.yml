@@ -22,12 +22,23 @@ commands:
     - run:
         name: "Install the latest eslint"
         command: |
-          if [ "$(which npm)" = "/usr/local/bin/eslint" ]; then
+          if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
               sudo npm install -g eslint &&
               sudo npm i --save-dev typescript @typescript-eslint/parser
           else
               npm install -g eslint &&
               npm i --save-dev typescript @typescript-eslint/parser
+          fi
+
+  install_jest:
+    steps:
+    - run:
+        name: "Install the latest jest"
+        command: |
+          if [ "$(which npm)" = "/usr/local/bin/npm" ]; then
+              sudo npm install --save-dev jest typescript ts-jest @types/jest
+          else
+              npm install --save-dev jest typescript ts-jest @types/jest
           fi
 
 jobs:
@@ -48,9 +59,10 @@ jobs:
     executor: node/default
     steps:
       - checkout
-      - install_npm_cmd
+      - upgrade_npm
+      - install_jest
       - run:
-          command: jest
+          command: npm run test
           name: run tests
 
 # Invoke jobs via workflows
@@ -59,3 +71,4 @@ workflows:
   precheckin-workflow:
     jobs:
       - eslint
+      - jest
